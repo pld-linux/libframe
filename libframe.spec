@@ -56,9 +56,7 @@ Statyczna biblioteka Frame.
 Summary:	API documentation for Frame library
 Summary(pl.UTF-8):	Dokumentacja API biblioteki Frame
 Group:		Documentation
-%if "%{_rpmversion}" >= "5"
 BuildArch:	noarch
-%endif
 
 %description apidocs
 API documentation for Frame library.
