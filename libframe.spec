@@ -1,18 +1,17 @@
 # TODO: matlab/octave, ROOT
 #
-# Conditional build:
-%bcond_without	static_libs	# static library
-#
 Summary:	LIGO/VIRGO frame library
 Summary(pl.UTF-8):	Biblioteka ramek LIGO/VIRGO
 Name:		libframe
-Version:	8.30
+%define		gitver	8r41p5
+%define		ver	%(echo %{gitver} | tr [rp] .)
+Version:	%{ver}
 Release:	1
 License:	MIT-like, modifications distributable only with explicit authors consent
 Group:		Libraries
-Source0:	http://lappweb.in2p3.fr/virgo/FrameL/%{name}-%{version}.tar.gz
-# Source0-md5:	efd7959d70e488b95395fbcde9bcd057
-URL:		http://lappweb.in2p3.fr/virgo/FrameL/
+Source0:	https://git.ligo.org/virgo/virgoapp/Fr/-/archive/v%{gitver}/Fr-v%{gitver}.tar.bz2
+# Source0-md5:	0f5037e55f634b7eea4cacebbc44b4cd
+URL:		https://git.ligo.org/virgo/virgoapp/Fr
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -40,18 +39,6 @@ Header files for Frame library.
 %description devel -l pl.UTF-8
 Pliki nagłówkowe biblioteki Frame.
 
-%package static
-Summary:	Static Frame library
-Summary(pl.UTF-8):	Statyczna biblioteka Frame
-Group:		Development/Libraries
-Requires:	%{name}-devel = %{version}-%{release}
-
-%description static
-Static Frame library.
-
-%description static -l pl.UTF-8
-Statyczna biblioteka Frame.
-
 %package apidocs
 Summary:	API documentation for Frame library
 Summary(pl.UTF-8):	Dokumentacja API biblioteki Frame
@@ -65,25 +52,23 @@ API documentation for Frame library.
 Dokumentacja API biblioteki Frame.
 
 %prep
-%setup -q
+%setup -q -n Fr-v%{gitver}
 
 %build
-%configure \
-	%{!?with_static_libs:--disable-static}
+mkdir -p build
+cd build
+%cmake ..
+
 %{__make}
 
 %install
 rm -rf $RPM_BUILD_ROOT
 
-%{__make} install \
+%{__make} -C build install \
 	DESTDIR=$RPM_BUILD_ROOT
 
-# obsoleted by pkg-config
-%{__rm} $RPM_BUILD_ROOT%{_libdir}/libFrame.la
 # packaged as %doc in -apidocs
-%{__rm} -r $RPM_BUILD_ROOT%{_docdir}/libframe
-# sources for MatLab
-%{__rm} -r $RPM_BUILD_ROOT%{_datadir}/libframe/src
+%{__rm} -r $RPM_BUILD_ROOT%{_docdir}/*.pdf
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -101,24 +86,18 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_bindir}/FrDump
 %attr(755,root,root) %{_bindir}/FrTrend
 %attr(755,root,root) %{_bindir}/FrameDataDump
-%attr(755,root,root) %{_libdir}/libFrame.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libFrame.so.1
+%attr(755,root,root) %{_libdir}/libframel.so.*.*.*
+%attr(755,root,root) %ghost %{_libdir}/libframel.so.8
 
 %files devel
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/libFrame.so
+%attr(755,root,root) %{_libdir}/libframel.so
 %{_includedir}/FrFilter.h
 %{_includedir}/FrIO.h
 %{_includedir}/FrVect.h
 %{_includedir}/FrameL.h
-%{_pkgconfigdir}/libframe.pc
-
-%if %{with static_libs}
-%files static
-%defattr(644,root,root,755)
-%{_libdir}/libFrame.a
-%endif
+%{_pkgconfigdir}/framel.pc
 
 %files apidocs
 %defattr(644,root,root,755)
-%doc doc/{FrDoc,Spec-Frame-Format-v8}.pdf
+%doc doc/{FrDoc,Frame-Format-VIR-0067B-08}.pdf
