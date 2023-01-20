@@ -1,17 +1,20 @@
-# TODO: matlab/octave, ROOT
+# TODO: python, matlab/octave, ROOT
 #
 Summary:	LIGO/VIRGO frame library
 Summary(pl.UTF-8):	Biblioteka ramek LIGO/VIRGO
 Name:		libframe
-%define		gitver	8r41p5
+%define		gitver	8r42p4
 %define		ver	%(echo %{gitver} | tr [rp] .)
 Version:	%{ver}
 Release:	1
-License:	MIT-like, modifications distributable only with explicit authors consent
+License:	LGPL v2.1+
 Group:		Libraries
 Source0:	https://git.ligo.org/virgo/virgoapp/Fr/-/archive/v%{gitver}/Fr-v%{gitver}.tar.bz2
-# Source0-md5:	0f5037e55f634b7eea4cacebbc44b4cd
+# Source0-md5:	6af68f554a74dae1a87e27954ca5e9a6
 URL:		https://git.ligo.org/virgo/virgoapp/Fr
+BuildRequires:	cmake >= 3.12.0
+BuildRequires:	rpm-build >= 4.6
+BuildRequires:	rpmbuild(macros) >= 1.605
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -32,6 +35,7 @@ Summary:	Header files for Frame library
 Summary(pl.UTF-8):	Pliki nagłówkowe biblioteki Frame
 Group:		Development/Libraries
 Requires:	%{name} = %{version}-%{release}
+Obsoletes:	libframe-static < 8.41
 
 %description devel
 Header files for Frame library.
