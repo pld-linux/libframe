@@ -6,7 +6,7 @@ Name:		libframe
 %define		gitver	8r42p4
 %define		ver	%(echo %{gitver} | tr [rp] .)
 Version:	%{ver}
-Release:	1
+Release:	2
 License:	LGPL v2.1+
 Group:		Libraries
 Source0:	https://git.ligo.org/virgo/virgoapp/Fr/-/archive/v%{gitver}/Fr-v%{gitver}.tar.bz2
@@ -61,7 +61,9 @@ Dokumentacja API biblioteki Frame.
 %build
 mkdir -p build
 cd build
-%cmake ..
+%cmake .. \
+	-DCMAKE_INSTALL_INCLUDEDIR=include \
+	-DCMAKE_INSTALL_LIBDIR=%{_lib}
 
 %{__make}
 
