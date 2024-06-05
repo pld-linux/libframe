@@ -5,12 +5,13 @@ Summary(pl.UTF-8):	Biblioteka ramek LIGO/VIRGO
 Name:		libframe
 %define		gitver	8r42p4
 %define		ver	%(echo %{gitver} | tr [rp] .)
-Version:	%{ver}
-Release:	2
+Version:	8.47.3
+Release:	1
 License:	LGPL v2.1+
 Group:		Libraries
-Source0:	https://git.ligo.org/virgo/virgoapp/Fr/-/archive/v%{gitver}/Fr-v%{gitver}.tar.bz2
-# Source0-md5:	6af68f554a74dae1a87e27954ca5e9a6
+# some versions also at http://software.igwn.org/lscsoft/source/Fr-%{version}.tar.gz
+Source0:	https://git.ligo.org/virgo/virgoapp/Fr/-/archive/%{version}/Fr-%{version}.tar.bz2
+# Source0-md5:	5ee0f2f924d860db35fb227f59c23b21
 URL:		https://git.ligo.org/virgo/virgoapp/Fr
 BuildRequires:	cmake >= 3.12.0
 BuildRequires:	rpm-build >= 4.6
@@ -56,7 +57,7 @@ API documentation for Frame library.
 Dokumentacja API biblioteki Frame.
 
 %prep
-%setup -q -n Fr-v%{gitver}
+%setup -q -n Fr-%{version}
 
 %build
 mkdir -p build
